@@ -34,11 +34,12 @@ type Entry struct {
 	Extended map[string][]byte
 
 	// the following is for files
-	Chunks []*filer_pb.FileChunk `json:"chunks,omitempty"`
+	Chunks    []*filer_pb.FileChunk    `json:"chunks,omitempty"`
+	ChunkSets []*filer_pb.FileChunkSet `json:"chunk_sets,omitempty"`
 }
 
 func (entry *Entry) Size() uint64 {
-	return TotalSize(entry.Chunks)
+	return TotalEntrySize(entry)
 }
 
 func (entry *Entry) Timestamp() time.Time {

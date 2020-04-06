@@ -84,7 +84,7 @@ func (g *B2Sink) CreateEntry(key string, entry *filer_pb.Entry) error {
 		return nil
 	}
 
-	totalSize := filer2.TotalSize(entry.Chunks)
+	totalSize := filer2.TotalSize(entry)
 	chunkViews := filer2.ViewFromChunks(entry.Chunks, 0, int64(totalSize))
 
 	bucket, err := g.client.Bucket(context.Background(), g.bucket)

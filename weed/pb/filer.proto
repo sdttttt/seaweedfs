@@ -76,6 +76,7 @@ message Entry {
     repeated FileChunk chunks = 3;
     FuseAttributes attributes = 4;
     map<string, bytes> extended = 5;
+    repeated FileChunkSet chunk_sets = 6;
 }
 
 message FullEntry {
@@ -88,6 +89,12 @@ message EventNotification {
     Entry new_entry = 2;
     bool delete_chunks = 3;
     string new_parent_path = 4;
+}
+
+message FileChunkSet {
+    FileId fid = 1;
+    int64 offset = 2;
+    uint64 size = 3;
 }
 
 message FileChunk {

@@ -49,7 +49,7 @@ func (f *Filer) appendToFile(targetFile string, data []byte) error {
 			},
 		}
 	} else {
-		offset = int64(TotalSize(entry.Chunks))
+		offset = int64(entry.Size())
 	}
 
 	// append to existing chunks

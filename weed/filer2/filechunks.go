@@ -10,8 +10,30 @@ import (
 	"github.com/chrislusf/seaweedfs/weed/pb/filer_pb"
 )
 
-func TotalSize(chunks []*filer_pb.FileChunk) (size uint64) {
-	for _, c := range chunks {
+func TotalSize(entry *filer_pb.Entry) (size uint64) {
+	for _, c := range entry.Chunks {
+		t := uint64(c.Offset + int64(c.Size))
+		if size < t {
+			size = t
+		}
+	}
+	for _, c := range entry.ChunkSets {
+		t := uint64(c.Offset + int64(c.Size))
+		if size < t {
+			size = t
+		}
+	}
+	return
+}
+
+func TotalEntrySize(entry *Entry) (size uint64) {
+	for _, c := range entry.Chunks {
+		t := uint64(c.Offset + int64(c.Size))
+		if size < t {
+			size = t
+		}
+	}
+	for _, c := range entry.ChunkSets {
 		t := uint64(c.Offset + int64(c.Size))
 		if size < t {
 			size = t

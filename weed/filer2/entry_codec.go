@@ -16,6 +16,7 @@ func (entry *Entry) EncodeAttributesAndChunks() ([]byte, error) {
 		Attributes: EntryAttributeToPb(entry),
 		Chunks:     entry.Chunks,
 		Extended:   entry.Extended,
+		ChunkSets:  entry.ChunkSets,
 	}
 	return proto.Marshal(message)
 }
@@ -33,6 +34,8 @@ func (entry *Entry) DecodeAttributesAndChunks(blob []byte) error {
 	entry.Extended = message.Extended
 
 	entry.Chunks = message.Chunks
+
+	entry.ChunkSets = message.ChunkSets
 
 	return nil
 }
@@ -88,6 +91,9 @@ func EqualEntry(a, b *Entry) bool {
 	if len(a.Chunks) != len(b.Chunks) {
 		return false
 	}
+	if len(a.ChunkSets) != len(b.ChunkSets) {
+		return false
+	}
 
 	if !eq(a.Extended, b.Extended) {
 		return false
@@ -95,6 +101,11 @@ func EqualEntry(a, b *Entry) bool {
 
 	for i := 0; i < len(a.Chunks); i++ {
 		if !proto.Equal(a.Chunks[i], b.Chunks[i]) {
+			return false
+		}
+	}
+	for i := 0; i < len(a.ChunkSets); i++ {
+		if !proto.Equal(a.ChunkSets[i], b.ChunkSets[i]) {
 			return false
 		}
 	}

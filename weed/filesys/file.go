@@ -54,7 +54,7 @@ func (file *File) Attr(ctx context.Context, attr *fuse.Attr) error {
 	attr.Inode = file.fullpath().AsInode()
 	attr.Valid = time.Second
 	attr.Mode = os.FileMode(file.entry.Attributes.FileMode)
-	attr.Size = filer2.TotalSize(file.entry.Chunks)
+	attr.Size = filer2.TotalSize(file.entry)
 	if file.isOpen > 0 {
 		attr.Size = file.entry.Attributes.FileSize
 		glog.V(4).Infof("file Attr %s, open:%v, size: %d", file.fullpath(), file.isOpen, attr.Size)
@@ -108,7 +108,7 @@ func (file *File) Setattr(ctx context.Context, req *fuse.SetattrRequest, resp *f
 	if req.Valid.Size() {
 
 		glog.V(3).Infof("%v file setattr set size=%v", file.fullpath(), req.Size)
-		if req.Size < filer2.TotalSize(file.entry.Chunks) {
+		if req.Size < filer2.TotalSize(file.entry) {
 			// fmt.Printf("truncate %v \n", fullPath)
 			var chunks []*filer_pb.FileChunk
 			for _, chunk := range file.entry.Chunks {

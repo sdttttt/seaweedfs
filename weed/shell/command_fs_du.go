@@ -70,9 +70,9 @@ func duTraverseDirectory(writer io.Writer, filerClient filer_pb.FilerClient, dir
 			}
 		} else {
 			fileBlockCount = uint64(len(entry.Chunks))
-			fileByteCount = filer2.TotalSize(entry.Chunks)
+			fileByteCount = filer2.TotalSize(entry)
 			blockCount += uint64(len(entry.Chunks))
-			byteCount += filer2.TotalSize(entry.Chunks)
+			byteCount += filer2.TotalSize(entry)
 		}
 
 		if name != "" && !entry.IsDirectory {
